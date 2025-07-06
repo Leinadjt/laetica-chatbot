@@ -18,7 +18,7 @@ Chatbot inteligente sobre ética y tecnología creado por Juan Terrones.
 
 ## Variables de Entorno
 
-- `OPENROUTER_API_KEY`: Tu API key de OpenRouter
+- `OPENROUTER_API_KEY`: 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
 - `PORT`: Puerto del servidor (opcional, por defecto 3000)
 
 ## Instalación
