@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Ética en un Mundo Tecnológico</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            --secondary-gradient: linear-gradient(135deg, #00ff99 0%, #00ffd0 100%);
+            --accent-gradient: linear-gradient(135deg, #00ff99 0%, #00ffd0 100%);
+            --dark-bg: #050a0e;
+            --card-bg: rgba(20, 30, 30, 0.95);
+            --text-primary: #ffffff;
+            --text-secondary: #b0ffdf;
+            --glass-bg: rgba(20, 30, 30, 0.7);
+            --glass-border: #00ff99;
+            --neon-green: #00ff99;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.7;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Fondo con líneas verdes fosforescentes */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -2;
+            background: repeating-linear-gradient(120deg, transparent, transparent 48px, var(--neon-green) 50px, transparent 52px),
+                        repeating-linear-gradient(-120deg, transparent, transparent 48px, var(--neon-green) 50px, transparent 52px);
+            opacity: 0.08;
+            pointer-events: none;
+        }
+
+        /* Background Animation */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            background: var(--primary-gradient);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 0;
+            background: rgba(10, 10, 10, 0.55); /* Siempre translúcido */
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid var(--neon-green);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 8px var(--neon-green), 0 0 2px #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #eafffa;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            text-shadow: 0 0 6px var(--neon-green);
+        }
+
+        .nav-links a:hover {
+            color: var(--neon-green);
+            text-shadow: 0 0 12px var(--neon-green), 0 0 2px #fff;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #ffffff, #e0e0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.5s forwards;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 300;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.8s forwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--accent-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeInUp 1s ease 1.1s forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(79, 172, 254, 0.3);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 8rem 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: clamp(2.2rem, 5vw, 3rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            margin-top: 3.5rem;
+            background: linear-gradient(90deg, #00ff99 0%, #00ffd0 50%, #fff700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 12px var(--neon-green), 0 0 2px #fff;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #eafffa;
+            text-align: center;
+            margin-bottom: 4rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            text-shadow: 0 2px 8px #00ffd0, 0 0 2px #fff700;
+        }
+
+        /* Problem Section */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .problem-card {
+            background: var(--card-bg);
+            border: 1.5px solid var(--neon-green);
+            box-shadow: 0 0 24px 0 var(--neon-green), 0 2px 16px 0 #000;
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .problem-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--secondary-gradient);
+        }
+
+        .problem-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .problem-card h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #fff;
+            background: linear-gradient(90deg, #00ff99 0%, #fff700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 2px 8px #00ffd0, 0 0 2px #fff700;
+        }
+
+        .problem-card p {
+            color: #eafffa;
+            line-height: 1.6;
+            text-shadow: 0 1px 6px #00ffd0, 0 0 2px #fff700;
+        }
+
+        /* Objectives Section */
+        .objectives-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 4rem;
+        }
+
+        .objectives-visual {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .objectives-visual::before {
+            content: '🎯';
+            font-size: 4rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .objectives-list {
+            list-style: none;
+            space-y: 1rem;
+        }
+
+        .objectives-list li {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            padding-left: 4rem;
+            transition: all 0.3s ease;
+        }
+
+        .objectives-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--accent-gradient);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        .objectives-list li:hover {
+            transform: translateX(10px);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Arguments Section */
+        .arguments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .argument-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .argument-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .argument-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .argument-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .argument-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Cases Section */
+        .cases-timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 4rem auto 0;
+        }
+
+        .cases-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--accent-gradient);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin: 3rem 0;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 45%;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:nth-child(odd) {
+            margin-left: 0;
+        }
+
+        .timeline-item:nth-child(even) {
+            margin-left: 55%;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 20px;
+            height: 20px;
+            background: var(--accent-gradient);
+            border-radius: 50%;
+            transform: translateY(-50%);
+        }
+
+        .timeline-item:nth-child(odd)::before {
+            right: -35px;
+        }
+
+        .timeline-item:nth-child(even)::before {
+            left: -35px;
+        }
+
+        .timeline-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .timeline-item h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Recommendations Section */
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .recommendation-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recommendation-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(79, 172, 254, 0.1), transparent);
+            animation: rotate 4s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .recommendation-card:hover::before {
+            opacity: 1;
+        }
+
+        .recommendation-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(79, 172, 254, 0.2);
+        }
+
+        .recommendation-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .recommendation-card p {
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(20px);
+            border-top: 2px solid var(--neon-green);
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-section p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+        }
+
+        .footer-bottom a {
+            color: var(--neon-green) !important;
+            text-shadow: 0 0 8px var(--neon-green);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .objectives-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                margin-left: 0 !important;
+            }
+            
+            .cases-timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-item::before {
+                left: 5px !important;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: var(--accent-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            cursor: pointer;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(79, 172, 254, 0.4);
+        }
+
+        /* Chatbot Styles */
+        .chatbot-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 380px;
+            height: 500px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--neon-green);
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 255, 153, 0.3), 0 10px 40px rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            animation: slideInUp 0.3s ease;
+        }
+
+        .chatbot-container.active {
+            display: flex;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .chatbot-header {
+            background: var(--accent-gradient);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--neon-green);
+        }
+
+        .chatbot-header h3 {
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+        }
+
+        .chatbot-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.2rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chatbot-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .chatbot-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chatbot-messages::-webkit-scrollbar-track {
+            background: rgba(0, 255, 153, 0.1);
+            border-radius: 3px;
+        }
+
+        .chatbot-messages::-webkit-scrollbar-thumb {
+            background: var(--neon-green);
+            border-radius: 3px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 0.8rem 1rem;
+            border-radius: 15px;
+            animation: messageSlide 0.3s ease;
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            background: var(--accent-gradient);
+            color: #111;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.bot {
+            background: rgba(0, 255, 153, 0.1);
+            color: var(--text-secondary);
+            border: 1px solid var(--neon-green);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .chatbot-input {
+            padding: 1rem;
+            border-top: 1px solid var(--neon-green);
+            background: rgba(0, 255, 153, 0.05);
+        }
+
+        .chatbot-input-container {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--neon-green);
+            border-radius: 25px;
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-input input:focus {
+            border-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 255, 153, 0.5);
+        }
+
+        .chatbot-input input::placeholder {
+            color: rgba(176, 255, 223, 0.6);
+        }
+
+        .chatbot-send {
+            background: var(--accent-gradient);
+            border: none;
+            color: white;
+            padding: 0.8rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chatbot-send:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 255, 153, 0.5);
+        }
+
+        .chatbot-send:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .quick-reply {
+            background: rgba(0, 255, 153, 0.1);
+            border: 1px solid var(--neon-green);
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .quick-reply:hover {
+            background: var(--accent-gradient);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 0.3rem;
+            padding: 0.8rem 1rem;
+            background: rgba(0, 255, 153, 0.1);
+            border: 1px solid var(--neon-green);
+            border-radius: 15px;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--neon-green);
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Hide FAB when chatbot is open */
+        .fab.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <header>
+        <nav class="container">
+            <div class="logo">Filosofía/Etica</div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#introduccion">Introducción</a></li>
+                <li><a href="#problema">Problema</a></li>
+                <li><a href="#objetivos">Objetivos</a></li>
+                <li><a href="#argumentos">Argumentos</a></li>
+                <li><a href="#casos">Casos</a></li>
+                <li><a href="#recomendaciones">Recomendaciones</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <h1>La Ética en un Mundo Tecnológico</h1>
+            <p class="subtitle" style="font-size:1.5rem; margin-top:1.5rem; color:#00ff99; text-shadow:0 0 8px #00ff99,0 0 2px #fff;">
+                "El avance tecnológico redefine la humanidad: la ética es el único camino para que la inteligencia artificial sirva al florecimiento humano."<br>
+                <span style="font-size:1rem; color:#b0ffdf;">(Terrones, 2019)</span>
+            </p>
+        </div>
+    </section>
+
+    <section id="introduccion">
+        <div class="container">
+            <h2 class="section-title fade-in">Introducción</h2>
+            <p class="section-subtitle fade-in" style="max-width:900px;margin:auto;">
+                La inteligencia artificial está transformando la sociedad y los valores humanos, generando oportunidades y riesgos éticos sin precedentes. Es urgente definir principios que guíen su desarrollo.
+            </p>
+        </div>
+    </section>
+
+    <section id="problema">
+        <div class="container">
+            <h2 class="section-title fade-in">Principales Desafíos Éticos</h2>
+            <div class="problem-grid">
+                <div class="problem-card fade-in">
+                    <h3>🛡️ Impacto en derechos humanos</h3>
+                    <p>La IA puede amplificar desigualdades y vulnerar la privacidad.</p>
+                </div>
+                <div class="problem-card fade-in">
+                    <h3>⚡ Brecha regulatoria</h3>
+                    <p>La tecnología avanza más rápido que las leyes y la ética.</p>
+                </div>
+                <div class="problem-card fade-in">
+                    <h3>🤖 Desafío humanista</h3>
+                    <p>El transhumanismo cuestiona la identidad y dignidad humana.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="objetivos">
+        <div class="container">
+            <h2 class="section-title fade-in">Objetivos</h2>
+            <ul class="objectives-list fade-in" style="max-width:700px;margin:auto;">
+                <li><strong>Identificar</strong> riesgos éticos de la IA.</li>
+                <li><strong>Proponer</strong> marcos regulatorios.</li>
+                <li><strong>Analizar</strong> casos reales de impacto negativo.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="argumentos">
+        <div class="container">
+            <h2 class="section-title fade-in">Argumentos Clave</h2>
+            <div class="arguments-grid">
+                <div class="argument-card fade-in">
+                    <h3>👁️ IA y derechos humanos</h3>
+                    <p>Puede perpetuar sesgos y discriminación.</p>
+                </div>
+                <div class="argument-card fade-in">
+                    <h3>🧬 Transhumanismo</h3>
+                    <p>Reta los valores tradicionales y la equidad.</p>
+                </div>
+                <div class="argument-card fade-in">
+                    <h3>⚖️ Regulación</h3>
+                    <p>Es clave para proteger la dignidad y la justicia social.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="casos">
+        <div class="container">
+            <h2 class="section-title fade-in">Casos Contemporáneos</h2>
+            <div class="cases-timeline">
+                <div class="timeline-item fade-in">
+                    <h3>📊 COMPAS</h3>
+                    <p>Algoritmo judicial con sesgo racial.</p>
+                </div>
+                <div class="timeline-item fade-in">
+                    <h3>🦠 Apps COVID</h3>
+                    <p>Dilemas entre privacidad y salud pública.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="recomendaciones">
+        <div class="container">
+            <h2 class="section-title fade-in">Recomendaciones</h2>
+            <div class="recommendations-grid">
+                <div class="recommendation-card fade-in">
+                    <h3>🎓 Educación</h3>
+                    <p>Ética tecnológica desde la escuela hasta la universidad.</p>
+                </div>
+                <div class="recommendation-card fade-in">
+                    <h3>📋 Regulación</h3>
+                    <p>Normas flexibles y participativas.</p>
+                </div>
+                <div class="recommendation-card fade-in">
+                    <h3>🌍 Inclusión</h3>
+                    <p>Incluir voces diversas en el debate tecnológico.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Autores</h3>
+                    <p>Leyva Flores, Stefany Katehrin<br>
+                    Llanos Arias, Valeria Fabiana<br>
+                    Saucedo, Ydrogo Maria del Pilar<br>
+                    Terrones Berrosp, Juan Daniel<br>
+                    Torres Suárez, Sonia Janneth</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Docente</h3>
+                    <p>Mgtr. Stephany Paola Tume Namuche</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Programa</h3>
+                    <p>Programa de Formación Humanística<br>
+                    Universidad - Perú<br>
+                    2025</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 La Ética en un Mundo Tecnológico. Presentación Académica.</p>
+                <p style="margin-top: 1rem;">
+                    <a href="http://juantdev.site/" target="_blank" style="color: #4facfe; text-decoration: none; font-weight: 600;">
+                        Creado por juantdev
+                    </a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="fab" onclick="toggleChatbot()">
+        💬
+    </div>
+
+    <!-- Chatbot -->
+    <div class="chatbot-container" id="chatbot">
+        <div class="chatbot-header">
+            <h3>🤖 Asistente Ético</h3>
+            <button class="chatbot-close" onclick="toggleChatbot()">×</button>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="message bot">
+                ¡Hola! Soy <b>EticBot</b>, tu asistente sobre ética tecnológica y humanismo en la era digital. ¿Sobre qué tema te gustaría conversar?
+            </div>
+            <div class="quick-replies">
+                <div class="quick-reply" onclick="sendQuickReply('Objetivos del análisis')">Objetivos del análisis</div>
+                <div class="quick-reply" onclick="sendQuickReply('Derechos humanos')">Derechos humanos</div>
+                <div class="quick-reply" onclick="sendQuickReply('Transhumanismo')">Transhumanismo</div>
+                <div class="quick-reply" onclick="sendQuickReply('Casos de estudio')">Casos de estudio</div>
+            </div>
+        </div>
+        <div class="chatbot-input">
+            <div class="chatbot-input-container">
+                <input type="text" id="chatbotInput" placeholder="Escribe tu pregunta..." onkeypress="handleKeyPress(event)">
+                <button class="chatbot-send" onclick="sendMessage()">→</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Scroll animations
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.fade-in');
+            const windowHeight = window.innerHeight;
+            reveals.forEach(el => {
+                const elementTop = el.getBoundingClientRect().top;
+                if (elementTop < windowHeight - 60) {
+                    el.classList.add('visible');
+                } else {
+                    el.classList.remove('visible');
+                }
+            });
+        }
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('DOMContentLoaded', revealOnScroll);
+
+        // Chatbot functionality - Base de conocimiento del PDF
+        const pdfContent = {
+            // Información del documento
+            'documento': {
+                'titulo': 'La ética en un mundo tecnológico: Desafíos del humanismo en la era de la inteligencia artificial',
+                'autores': ['Leyva Flores, Stefany Katehrin', 'Llanos Arias, Valeria Fabiana', 'Saucedo, Ydrogo Maria del Pilar', 'Terrones Berrosp, Juan Daniel', 'Torres Suárez, Sonia Janneth'],
+                'docente': 'Mgtr. Stephany Paola Tume Namuche',
+                'año': '2025',
+                'institucion': 'PROGRAMA DE FORMACIÓN HUMANÍSTICA',
+                'creador_pagina': 'Juan Terrones',
+                'rol_juan': 'Creador y desarrollador de la página web y del chatbot',
+                'contacto_juan': 'https://juantdev.site/'
+            },
+            
+            // Contenido estructurado del PDF
+            'introduccion': {
+                'problema': 'El avance tecnológico liderado por la IA está redefiniendo no solo nuestras formas de vida, sino también los valores fundamentales que han sustentado la civilización humana durante milenios. La CIDH (2025) señala que los sistemas de IA ya están generando impactos significativos en los derechos fundamentales, particularmente en comunidades vulnerables y países en desarrollo.',
+                'paradoja': 'Mientras la IA promete soluciones innovadoras para problemas complejos, simultáneamente plantea riesgos existenciales para la dignidad humana, la autonomía personal y la equidad social.',
+                'urgencia': 'Nos enfrentamos a una crisis ética sin precedentes donde las decisiones tomadas por algoritmos determinarán el futuro de la humanidad, sin principios rectores establecidos.'
+            },
+            
+            'objetivos': {
+                'general': 'Examinar críticamente la necesidad imperativa de integrar principios éticos humanistas en el diseño, desarrollo y aplicación de tecnologías avanzadas, particularmente la IA.',
+                'especificos': [
+                    'Identificar y analizar los riesgos éticos más significativos asociados al uso de la IA',
+                    'Evaluar los desafíos que plantea el transhumanismo a los valores humanistas tradicionales',
+                    'Proponer un marco de regulación ética que equilibre la innovación tecnológica con la protección de los derechos humanos',
+                    'Examinar casos concretos donde la falta de consideraciones éticas ha resultado en consecuencias negativas'
+                ]
+            },
+            
+            'argumentos': {
+                'derechos_humanos': {
+                    'problema': 'La UNESCO (2024) documenta cómo los sistemas de IA tienen el potencial de reproducir y amplificar prejuicios existentes, discriminando sistemáticamente a grupos históricamente marginados.',
+                    'casos': [
+                        'Algoritmos de reconocimiento facial con sesgos raciales significativos',
+                        'Sistemas de justicia predictiva que perpetúan discriminación histórica',
+                        'Calificación social y vigilancia masiva que vulneran derechos fundamentales'
+                    ],
+                    'impacto': 'La CIDH (2025) identifica que estos sistemas no solo reproducen discriminación histórica, sino que la legitimizan bajo una apariencia de objetividad científica.'
+                },
+                
+                'transhumanismo': {
+                    'definicion': 'El transhumanismo propone superar los límites naturales de la humanidad mediante el mejoramiento tecnológico y la separación de la mente del cuerpo humano.',
+                    'desafios': [
+                        'Desdibuja los límites entre lo humano y lo artificial',
+                        'Crea tensiones en torno a la responsabilidad ética y legal',
+                        'Plantea interrogantes sobre identidad y naturaleza humana'
+                    ],
+                    'caso_estudio': 'Neil Harbisson, primer ciborg oficialmente reconocido, ilustra la relación compleja entre transhumanismo y discapacidad.',
+                    'contexto_latino': 'En América Latina, donde persisten desigualdades significativas, el transhumanismo podría exacerbar disparidades al crear una nueva clase de "humanos mejorados".'
+                },
+                
+                'regulacion': {
+                    'desafio': 'La velocidad exponencial del progreso tecnológico ha superado la capacidad de los marcos normativos tradicionales para adaptarse.',
+                    'enfoques': {
+                        'ue': 'Enfoque precautorio con el Reglamento de IA, estableciendo categorías de riesgo',
+                        'eeuu': 'Autorregulación industrial',
+                        'china': 'Supervisión estatal directa'
+                    },
+                    'america_latina': 'Enfrenta desafíos únicos como la brecha digital persistente, limitada capacidad institucional y dependencia de tecnologías desarrolladas en otros contextos.',
+                    'requisitos': 'Enfoque multi-stakeholder que integre perspectivas técnicas, éticas, jurídicas y sociales.'
+                },
+                
+                'casos_contemporaneos': {
+                    'compas': {
+                        'descripcion': 'Sistema de justicia predictiva utilizado en EE.UU. para evaluar riesgo de reincidencia',
+                        'problema': 'Presentaba sesgos raciales significativos, clasificando incorrectamente a defendants afroamericanos como de alto riesgo',
+                        'leccion': 'Importancia de auditorías éticas regulares y transparencia en algoritmos judiciales'
+                    },
+                    'covid': {
+                        'descripcion': 'Aplicaciones de rastreo de contactos durante la pandemia',
+                        'dilemas': 'Privacidad, consentimiento y surveillance estatal',
+                        'leccion': 'Necesidad de equilibrar eficacia técnica con protección de derechos fundamentales'
+                    }
+                }
+            },
+            
+            'conclusiones': {
+                'principales': [
+                    'La IA puede impactar negativamente en los derechos humanos al reproducir y amplificar sesgos existentes',
+                    'El transhumanismo plantea interrogantes profundas sobre identidad humana y dignidad individual',
+                    'La regulación efectiva requiere participación ciudadana activa y marcos normativos adaptativos'
+                ]
+            },
+            
+            'recomendaciones': {
+                'educativo': 'Fomentar la formación en ética tecnológica desde niveles básicos hasta universitarios',
+                'regulatorio': 'Establecer marcos normativos participativos que incluyan múltiples stakeholders',
+                'investigacion': 'Promover el diálogo interdisciplinario entre expertos en tecnología, ética, derecho y ciencias sociales',
+                'social': 'Garantizar que las voces de comunidades marginadas sean incluidas en las discusiones sobre desarrollo tecnológico'
+            },
+            
+            'citas': {
+                'terrones_2019': '"El humanismo tecnológico representa la exigencia de un tiempo de desafíos tecnológicos y, a la vez, una premisa ineludible para garantizar que la inteligencia artificial sea una herramienta al servicio del florecimiento humano."',
+                'unesco_2024': 'Los sistemas de IA tienen "repercusiones positivas y negativas profundas y dinámicas en las sociedades, el medio ambiente, los ecosistemas y las vidas humanas, en particular en la mente humana"',
+                'linares_2018': 'Es fundamental "reconstruir una ética para el mundo tecnológico que evalúe los efectos del poder tecnológico desde principios como la responsabilidad social y la justicia distributiva"'
+            }
+        };
+
+        const chatbotResponses = {
+            // Respuestas basadas en el contenido del PDF
+            '¿qué es la ética tecnológica?': `Según el análisis presentado en "${pdfContent.documento.titulo}", la ética tecnológica aborda la paradoja fundamental de nuestro tiempo: mientras la inteligencia artificial promete soluciones innovadoras para problemas complejos, simultáneamente plantea riesgos existenciales para la dignidad humana, la autonomía personal y la equidad social.\n\nComo señala ${pdfContent.citas.terrones_2019}\n\nLa UNESCO (2024) reconoce que estos sistemas tienen ${pdfContent.citas.unesco_2024}`,
+            
+            'objetivos del análisis': `Los objetivos de este análisis son:\n\n🎯 **Objetivo General:** ${pdfContent.objetivos.general}\n\n📋 **Objetivos Específicos:**\n${pdfContent.objetivos.especificos.map((obj, i) => `${i+1}. ${obj}`).join('\n')}`,
+            
+            'derechos humanos': `Según el análisis, el impacto de la IA en los derechos humanos es crítico:\n\n${pdfContent.argumentos.derechos_humanos.problema}\n\n**Casos específicos identificados:**\n${pdfContent.argumentos.derechos_humanos.casos.map(caso => `• ${caso}`).join('\n')}\n\n${pdfContent.argumentos.derechos_humanos.impacto}`,
+            
+            'transhumanismo': `El transhumanismo representa uno de los desafíos más profundos para el humanismo tradicional:\n\n**Definición:** ${pdfContent.argumentos.transhumanismo.definicion}\n\n**Desafíos principales:**\n${pdfContent.argumentos.transhumanismo.desafios.map(desafio => `• ${desafio}`).join('\n')}\n\n**Caso de estudio:** ${pdfContent.argumentos.transhumanismo.caso_estudio}\n\n**Contexto latinoamericano:** ${pdfContent.argumentos.transhumanismo.contexto_latino}`,
+            
+            'regulación': `La regulación ética del desarrollo tecnológico presenta desafíos complejos:\n\n**Problema central:** ${pdfContent.argumentos.regulacion.desafio}\n\n**Enfoques internacionales:**\n• **UE:** ${pdfContent.argumentos.regulacion.enfoques.ue}\n• **EE.UU.:** ${pdfContent.argumentos.regulacion.enfoques.eeuu}\n• **China:** ${pdfContent.argumentos.regulacion.enfoques.china}\n\n**Desafíos en América Latina:** ${pdfContent.argumentos.regulacion.america_latina}\n\n**Requisitos para regulación efectiva:** ${pdfContent.argumentos.regulacion.requisitos}`,
+            
+            'casos de estudio': `El análisis presenta casos contemporáneos instructivos:\n\n**1. Sistema COMPAS:**\n${pdfContent.argumentos.casos_contemporaneos.compas.descripcion}\n**Problema:** ${pdfContent.argumentos.casos_contemporaneos.compas.problema}\n**Lección:** ${pdfContent.argumentos.casos_contemporaneos.compas.leccion}\n\n**2. Aplicaciones COVID-19:**\n${pdfContent.argumentos.casos_contemporaneos.covid.descripcion}\n**Dilemas:** ${pdfContent.argumentos.casos_contemporaneos.covid.dilemas}\n**Lección:** ${pdfContent.argumentos.casos_contemporaneos.covid.leccion}`,
+            
+            'conclusiones': `Las conclusiones principales del análisis son:\n\n${pdfContent.conclusiones.principales.map(conclusion => `• ${conclusion}`).join('\n')}\n\nComo señala ${pdfContent.citas.linares_2018}`,
+            
+            'recomendaciones': `Para construir un futuro tecnológico ético, se recomienda:\n\n🎓 **Ámbito educativo:** ${pdfContent.recomendaciones.educativo}\n\n📋 **Ámbito regulatorio:** ${pdfContent.recomendaciones.regulatorio}\n\n🔬 **Ámbito de investigación:** ${pdfContent.recomendaciones.investigacion}\n\n🌍 **Ámbito social:** ${pdfContent.recomendaciones.social}`,
+            
+            'autores': `Este análisis fue desarrollado por:\n\n${pdfContent.documento.autores.map(autor => `• ${autor}`).join('\n')}\n\n**Docente:** ${pdfContent.documento.docente}\n**Institución:** ${pdfContent.documento.institucion}\n**Año:** ${pdfContent.documento.año}`,
+            
+            'compas': `**Caso COMPAS - Sistema de Justicia Predictiva:**\n\n${pdfContent.argumentos.casos_contemporaneos.compas.descripcion}\n\n**Problema identificado:** ${pdfContent.argumentos.casos_contemporaneos.compas.problema}\n\n**Lección aprendida:** ${pdfContent.argumentos.casos_contemporaneos.compas.leccion}\n\nEste caso demuestra la importancia crítica de auditorías éticas en sistemas algorítmicos que afectan decisiones judiciales.`,
+            
+            'covid': `**Aplicaciones de Rastreo COVID-19:**\n\n${pdfContent.argumentos.casos_contemporaneos.covid.descripcion}\n\n**Dilemas éticos planteados:**\n${pdfContent.argumentos.casos_contemporaneos.covid.dilemas}\n\n**Lección aprendida:** ${pdfContent.argumentos.casos_contemporaneos.covid.leccion}\n\nLa experiencia demostró la necesidad de diseñar sistemas que equilibren eficacia técnica con protección de derechos fundamentales.`,
+            
+            'humanismo tecnológico': `El humanismo tecnológico es un concepto central en este análisis. Como afirma ${pdfContent.citas.terrones_2019}\n\nEste enfoque representa la exigencia de un tiempo de desafíos tecnológicos y, a la vez, una premisa ineludible para garantizar que la inteligencia artificial sea una herramienta al servicio del florecimiento humano, no una amenaza a la dignidad humana.`,
+            
+            'brecha digital': `En el contexto latinoamericano, la brecha digital es un problema ético crítico. Como documenta Calderón L. (2024), la brecha digital y la privacidad de los datos son problemas éticos que requieren una regulación crítica y transformadora, adaptada a las realidades socioeconómicas regionales.\n\nEsto se relaciona directamente con los desafíos del transhumanismo, que podría exacerbar las desigualdades existentes al crear una nueva clase de "humanos mejorados" con ventajas competitivas significativas.`,
+            
+                        'default': 'Interesante pregunta. Este análisis sobre "La ética en un mundo tecnológico" aborda múltiples dimensiones de los desafíos éticos contemporáneos. ¿Te gustaría saber más sobre algún aspecto específico como los derechos humanos, el transhumanismo, la regulación, o los casos de estudio como COMPAS o las aplicaciones COVID-19? Si tienes preguntas sobre la página o el chatbot, puedes agradecer a Juan Terrones, su creador y desarrollador.',
+            'quien hizo esta pagina': `Esta página y el chatbot fueron creados y desarrollados por Juan Terrones (juantdev). Puedes conocer más sobre su trabajo en ${pdfContent.documento.contacto_juan}`,
+            'quien es juan terrones': `Juan Terrones es el creador y desarrollador de esta página web y del chatbot. Además, es uno de los autores del análisis "${pdfContent.documento.titulo}".`,
+            'quien desarrollo el chatbot': `El chatbot fue desarrollado por Juan Terrones para brindar asistencia educativa sobre ética tecnológica basada en el análisis académico del equipo.`,
+            'puedo contactar al creador': `¡Por supuesto! Puedes contactar a Juan Terrones, el creador y desarrollador de la página, a través de su web: ${pdfContent.documento.contacto_juan}`,
+            'gracias juan': '¡De nada! Juan Terrones estará feliz de saber que te ha sido útil esta página y el chatbot.',
+            'saludos': '¡Hola! ¿En qué aspecto social, ético o tecnológico te gustaría profundizar? Recuerda que este espacio es seguro y abierto para el diálogo.',
+            'me siento preocupado': 'Entiendo tus preocupaciones. La tecnología puede generar incertidumbre, pero el diálogo y la educación ética son claves para construir un futuro más humano y justo. ¿Quieres compartir más sobre lo que te inquieta?',
+            'me siento feliz': '¡Qué bueno! La tecnología, cuando se usa éticamente, puede contribuir mucho al bienestar social. ¿Te gustaría saber cómo la ética tecnológica puede mejorar la sociedad?',
+            'quiero compartir una opinión': '¡Adelante! Este chatbot está diseñado para escuchar y dialogar sobre ética, tecnología y sociedad. ¿Qué te gustaría compartir?'
+        };
+
+        // Patrones de reconocimiento más inteligentes - Basados en el PDF
+        const keywordPatterns = {
+            // Temas principales del PDF
+            'derechos humanos': ['derechos humanos', 'derechos fundamentales', 'dignidad humana', 'libertad', 'igualdad', 'discriminación'],
+            'transhumanismo': ['transhumanismo', 'transhumanista', 'mejoramiento humano', 'ciborg', 'neil harbisson', 'hibridación'],
+            'regulación': ['regulación', 'regulatorio', 'marco normativo', 'leyes', 'políticas', 'normativas'],
+            'compas': ['compas', 'justicia predictiva', 'algoritmo judicial', 'sentencia', 'reincidencia', 'corte'],
+            'covid': ['covid', 'pandemia', 'rastreo de contactos', 'aplicaciones covid', 'vigilancia sanitaria'],
+            'humanismo tecnológico': ['humanismo tecnológico', 'humanismo', 'terrones', 'florecimiento humano'],
+            'brecha digital': ['brecha digital', 'desigualdad digital', 'acceso tecnológico', 'calderón'],
+            
+            // Temas adicionales
+            'inteligencia artificial': ['ia', 'ai', 'inteligencia artificial', 'machine learning', 'aprendizaje automático', 'neural', 'redes neuronales'],
+            'algoritmos': ['algoritmo', 'algoritmos', 'código', 'programa', 'software'],
+            'automación': ['automación', 'automatización', 'robots', 'trabajo', 'empleo', 'desempleo'],
+            'vigilancia': ['vigilancia', 'espionaje', 'monitoreo', 'cámaras', 'seguimiento'],
+            'desinformación': ['fake news', 'desinformación', 'mentiras', 'manipulación', 'deepfake'],
+            'responsabilidad': ['responsabilidad', 'culpa', 'culpable', 'responsable', 'accountability'],
+            'educación': ['educación', 'enseñanza', 'aprendizaje', 'escuela', 'universidad'],
+            'sostenibilidad': ['sostenibilidad', 'medio ambiente', 'ecología', 'verde', 'clima'],
+            'equidad': ['equidad', 'igualdad', 'justicia', 'discriminación', 'brecha'],
+            'reconocimiento facial': ['reconocimiento facial', 'face recognition', 'rostro', 'identificación'],
+            'chatgpt': ['chatgpt', 'gpt', 'openai', 'modelo de lenguaje', 'llm'],
+            'deep learning': ['deep learning', 'aprendizaje profundo', 'redes neuronales', 'neural'],
+            'robótica': ['robots', 'robótica', 'automatización', 'máquinas'],
+            'blockchain': ['blockchain', 'bitcoin', 'criptomonedas', 'descentralizado'],
+            'metaverso': ['metaverso', 'realidad virtual', 'vr', 'ar', 'virtual'],
+            'quantum': ['cuántica', 'quantum', 'qubits', 'superposición'],
+            'neurotechnology': ['neurotecnología', 'cerebro', 'neural', 'bci', 'interfaz'],
+            'biotechnology': ['biotecnología', 'genética', 'crispr', 'adn', 'genes']
+        };
+
+        function toggleChatbot() {
+            const chatbot = document.getElementById('chatbot');
+            const fab = document.querySelector('.fab');
+            
+            if (chatbot.classList.contains('active')) {
+                chatbot.classList.remove('active');
+                fab.classList.remove('hidden');
+            } else {
+                chatbot.classList.add('active');
+                fab.classList.add('hidden');
+                document.getElementById('chatbotInput').focus();
+            }
+        }
+
+        function addMessage(text, sender) {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.textContent = text;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        window.addMessage = addMessage;
+
+        // Reemplaza la función getBotResponse por una versión asíncrona
+        async function getBotResponse(userMessage) {
+            const lowerMessage = userMessage.toLowerCase();
+
+            // 1. Buscar coincidencias exactas
+            for (const [key, response] of Object.entries(chatbotResponses)) {
+                if (lowerMessage.includes(key.toLowerCase())) {
+                    return response;
+                }
+            }
+
+            // 2. Buscar por patrones de palabras clave
+            for (const [topic, keywords] of Object.entries(keywordPatterns)) {
+                for (const keyword of keywords) {
+                    if (lowerMessage.includes(keyword.toLowerCase())) {
+                        return chatbotResponses[topic] || chatbotResponses['default'];
+                    }
+                }
+            }
+
+            // 3. Análisis de contexto más inteligente
+            const contextResponse = analyzeContext(lowerMessage);
+            if (contextResponse) {
+                return contextResponse;
+            }
+
+            // 4. Si no hay respuesta local, consulta el backend (OpenAI)
+            try {
+                const res = await fetch('http://localhost:3001/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: userMessage })
+                });
+                const data = await res.json();
+                if (data.reply) return data.reply;
+                return 'No encontré una respuesta, pero puedes intentar reformular tu pregunta.';
+            } catch (e) {
+                return 'No pude consultar la IA externa en este momento. Intenta de nuevo más tarde.';
+            }
+        }
+
+        function analyzeContext(message) {
+            // Análisis de sentimiento y contexto
+            const positiveWords = ['bueno', 'beneficioso', 'positivo', 'ayuda', 'mejora', 'progreso'];
+            const negativeWords = ['malo', 'peligroso', 'riesgo', 'problema', 'daño', 'miedo'];
+            const questionWords = ['qué', 'cómo', 'por qué', 'cuándo', 'dónde', 'quién'];
+            
+            const isQuestion = questionWords.some(word => message.includes(word));
+            const isPositive = positiveWords.some(word => message.includes(word));
+            const isNegative = negativeWords.some(word => message.includes(word));
+            
+            // Respuestas contextuales
+            if (isQuestion && message.includes('futuro')) {
+                return 'El futuro de la tecnología depende de nuestras decisiones éticas actuales. Es crucial que desarrollemos tecnologías que sirvan al bien común y respeten la dignidad humana. ¿Te preocupa algún aspecto específico del futuro tecnológico?';
+            }
+            
+            if (isQuestion && message.includes('riesgo')) {
+                return 'Los riesgos de la tecnología incluyen:\n\n⚠️ Pérdida de privacidad\n🤖 Autonomía excesiva de IA\n💰 Amplificación de desigualdades\n🌍 Impacto ambiental\n⚖️ Erosión de derechos humanos\n\nLa gestión de riesgos requiere regulación inteligente y participación ciudadana.';
+            }
+            
+            if (isPositive && message.includes('tecnología')) {
+                return '¡Excelente actitud! La tecnología tiene un potencial enorme para mejorar la humanidad. La clave está en desarrollarla éticamente, priorizando el bien común y la sostenibilidad. ¿Qué aspecto positivo de la tecnología te interesa más?';
+            }
+            
+            if (isNegative && message.includes('tecnología')) {
+                return 'Entiendo tus preocupaciones. La tecnología puede ser problemática cuando se desarrolla sin consideración ética. Es importante ser crítico y exigir transparencia y responsabilidad. ¿Qué aspecto específico te preocupa más?';
+            }
+            
+            // Respuestas para preguntas generales sobre ética
+            if (isQuestion && (message.includes('ética') || message.includes('moral'))) {
+                return 'La ética tecnológica es fundamental porque la tecnología afecta a todos los aspectos de nuestra vida. Necesitamos principios claros para asegurar que la innovación sirva a la humanidad y no al revés. ¿Te gustaría explorar algún principio ético específico?';
+            }
+            
+            return null;
+        }
+
+        function showTypingIndicator() {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            `;
+            
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        function showQuickReplies() {
+            const messagesContainer = document.getElementById('chatbotMessages');
+            const quickRepliesDiv = document.createElement('div');
+            quickRepliesDiv.className = 'quick-replies';
+            quickRepliesDiv.id = 'quickReplies';
+            
+            // Respuestas rápidas dinámicas basadas en el contexto
+            const dynamicReplies = getDynamicQuickReplies();
+            
+            quickRepliesDiv.innerHTML = dynamicReplies.map(reply => 
+                `<div class="quick-reply" onclick="sendQuickReply('${reply}')">${reply}</div>`
+            ).join('');
+            
+            messagesContainer.appendChild(quickRepliesDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function getDynamicQuickReplies() {
+            // Obtener el historial de mensajes para contexto
+            const messages = document.querySelectorAll('.message.user');
+            const lastMessage = messages.length > 0 ? messages[messages.length - 1].textContent.toLowerCase() : '';
+            
+            // Respuestas rápidas contextuales basadas en el PDF
+            if (lastMessage.includes('derechos humanos') || lastMessage.includes('derechos fundamentales')) {
+                return [
+                    'Impacto de IA en derechos humanos',
+                    'Casos de discriminación algorítmica',
+                    'Vigilancia y privacidad',
+                    'Protección de derechos digitales'
+                ];
+            }
+            
+            if (lastMessage.includes('transhumanismo') || lastMessage.includes('humanismo')) {
+                return [
+                    'Desafíos del transhumanismo',
+                    'Caso Neil Harbisson',
+                    'Humanismo tecnológico',
+                    'Contexto latinoamericano'
+                ];
+            }
+            
+            if (lastMessage.includes('regulación') || lastMessage.includes('leyes') || lastMessage.includes('normativas')) {
+                return [
+                    'Marco regulatorio ético',
+                    'Enfoques internacionales',
+                    'Desafíos en América Latina',
+                    'Participación ciudadana'
+                ];
+            }
+            
+            if (lastMessage.includes('compas') || lastMessage.includes('justicia') || lastMessage.includes('judicial')) {
+                return [
+                    'Caso COMPAS detallado',
+                    'Sesgos en algoritmos judiciales',
+                    'Auditorías éticas',
+                    'Transparencia algorítmica'
+                ];
+            }
+            
+            if (lastMessage.includes('covid') || lastMessage.includes('pandemia')) {
+                return [
+                    'Aplicaciones de rastreo COVID',
+                    'Dilemas de privacidad',
+                    'Vigilancia sanitaria',
+                    'Consentimiento informado'
+                ];
+            }
+            
+            if (lastMessage.includes('brecha digital') || lastMessage.includes('desigualdad')) {
+                return [
+                    'Brecha digital en América Latina',
+                    'Desigualdades tecnológicas',
+                    'Acceso universal',
+                    'Contexto regional'
+                ];
+            }
+            
+            if (lastMessage.includes('ia') || lastMessage.includes('inteligencia artificial')) {
+                return [
+                    'Objetivos del análisis',
+                    'Derechos humanos',
+                    'Transhumanismo',
+                    'Regulación ética'
+                ];
+            }
+            
+            // Respuestas rápidas por defecto basadas en el PDF
+            return [
+                'Objetivos del análisis',
+                'Derechos humanos',
+                'Transhumanismo',
+                'Casos de estudio'
+            ];
+        }
+
+        function hideQuickReplies() {
+            const quickReplies = document.getElementById('quickReplies');
+            if (quickReplies) {
+                quickReplies.remove();
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatbotInput');
+            const message = input.value.trim();
+            if (message) {
+                addMessage(message, 'user');
+                input.value = '';
+                showTypingIndicator();
+                setTimeout(async () => {
+                    hideTypingIndicator();
+                    const response = await getBotResponse(message);
+                    addMessage(response, 'bot');
+                    setTimeout(() => { showQuickReplies(); }, 500);
+                }, 1000 + Math.random() * 1000);
+            }
+        }
+        window.sendMessage = sendMessage;
+
+        function sendQuickReply(text) {
+            addMessage(text, 'user');
+            hideQuickReplies();
+            showTypingIndicator();
+            setTimeout(async () => {
+                hideTypingIndicator();
+                const response = await getBotResponse(text);
+                addMessage(response, 'bot');
+                setTimeout(() => { showQuickReplies(); }, 500);
+            }, 800 + Math.random() * 800);
+        }
+        window.sendQuickReply = sendQuickReply;
+
+        // Close chatbot when clicking outside
+        // Eliminar cierre automático al hacer clic fuera
+    </script>
+</body>
+</html>
